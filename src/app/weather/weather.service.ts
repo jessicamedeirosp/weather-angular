@@ -1,18 +1,16 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { Observable, throwError } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { map, catchError } from "rxjs/operators";
+
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class WeatherService {
-  apiKey: string;
-  apiPath: string;
+  apiKey: string = '9afb77b830559af41c55a78620eda19a';
+  apiPath: string = `https://api.openweathermap.org/data/2.5/weather?appid=${this.apiKey}&lang=pt_br&units=metric`;
 
-  constructor(private http: HttpClient) {
-    this.apiKey = "9afb77b830559af41c55a78620eda19a";
-    this.apiPath = `https://api.openweathermap.org/data/2.5/weather?appid=${this.apiKey}&lang=pt_br&units=metric`;
-  }
+  constructor(private http: HttpClient) {}
 
   readByCity(city: string): Observable<any> | undefined {
     if (city.length) {
@@ -29,16 +27,20 @@ export class WeatherService {
     latitude: number,
     longitude: number
   ): Observable<any> | undefined {
-    const url = `${this.apiPath}&lat=${latitude}&lon=${longitude}`;
-    return this.http.get<any>(url).pipe(
-      map((object) => object),
-      catchError(this.handleError)
-    );
+    if (latitude && longitude) {
+      const url = `${this.apiPath}&lat=${latitude}&lon=${longitude}`;
+      return this.http.get<any>(url).pipe(
+        map((object) => object),
+        catchError(this.handleError)
+      );
+    }
+    return;
   }
+
   // protected method
 
   protected handleError(error: any) {
-    console.log("ERRO NA REQUISIÇÃO => ", error);
+    console.log('ERRO NA REQUISIÇÃO => ', error);
     return throwError(error);
   }
 }
