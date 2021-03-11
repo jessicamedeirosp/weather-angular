@@ -1,19 +1,20 @@
-import { WeatherService } from "./../weather.service";
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 @Component({
-  selector: "app-search-weather",
-  templateUrl: "./search-weather.component.html",
-  styleUrls: ["./search-weather.component.css"],
+  selector: 'app-search-weather',
+  templateUrl: './search-weather.component.html',
+  styleUrls: ['./search-weather.component.css'],
 })
 export class SearchWeatherComponent implements OnInit {
-  @ViewChild("searchWeather") searchWeather: ElementRef;
-  searchValue: string = "";
+  @ViewChild('searchWeather') searchWeather: ElementRef;
+  searchValue: string = '';
 
-  constructor(private weatherService: WeatherService) {}
+  constructor() {}
   ngOnInit(): void {}
 
   search() {
-    this.searchValue = this.searchWeather.nativeElement.value;
+    if (this.searchWeather)
+      this.searchValue = this.searchWeather.nativeElement.value;
+    return;
   }
 }
